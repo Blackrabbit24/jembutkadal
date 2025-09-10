@@ -6,8 +6,20 @@ import time
 nama_input = input("Masukkan nama pelanggan: ")
 
 # Baca daftar NIK dari file txt
-with open("worldlist.txt", "r") as file:
-    daftar_nik = [line.strip() for line in file.readlines()]
+# with open("worldlist.txt", "r") as file:
+#     daftar_nik = [line.strip() for line in file.readlines()]
+
+daftar_nik = []   # inisialisasi list kosong
+
+x = 0
+for j in range(99):    
+    x += 1
+    y = 0    
+    for i in range(9999):        
+        y += 1
+        nik = f"3314{x:02d}040799{y:04d}"
+        daftar_nik.append(nik)   # simpan ke list
+
 
 # Inisialisasi browser Selenium
 driver = webdriver.Chrome()  # Pastikan chromedriver terpasang
