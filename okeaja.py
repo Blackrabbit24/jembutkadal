@@ -5,58 +5,60 @@ import time
 # Input nama pengguna yang ingin divalidasi
 nama_input = input("Masukkan nama pelanggan: ")
 
-# Baca daftar NIK dari file txt
-# with open("worldlist.txt", "r") as file:
-#     daftar_nik = [line.strip() for line in file.readlines()]
-
-daftar_nik = []   # inisialisasi list kosong
-
+daftar_nik = []
 x = 0
-for j in range(99):    
+for j in range(20):    
     x += 1
     y = 0    
-    for i in range(9999):        
+    for i in range(99):        
         y += 1
         nik = f"3314{x:02d}040799{y:04d}"
-        daftar_nik.append(nik)   # simpan ke list
-
+        daftar_nik.append(nik)
 
 # Inisialisasi browser Selenium
 driver = webdriver.Chrome()  # Pastikan chromedriver terpasang
-
-url_cek_dpt = "https://cekdptonline.kpu.go.id/"  # Ganti dengan URL sebenarnya
+url_cek_dpt = "https://cekdptonline.kpu.go.id/"
 driver.get(url_cek_dpt)
 
-results = []
+results = []  # inisialisasi list kosong
 
 for nik in daftar_nik:
-    time.sleep(1)  # Tunggu load halaman, bisa dioptimalkan
+    time.sleep(1)
 
-    # Temukan kolom input NIK (sesuaikan By dan value sesuai struktur web)
     kolom_nik = driver.find_element(By.XPATH, '//input[@type="text"]')
     kolom_nik.clear()
     kolom_nik.send_keys(nik)
 
-    # Klik tombol pencarian (sesuaikan dengan XPATH / Selector yang benar)
     tombol_cari = driver.find_element(By.XPATH, '//button[contains(.,"Pencarian")]')
     tombol_cari.click()
-    time.sleep(2)  # Tunggu hasil pencarian
+    time.sleep(2)
 
-    # Ambil nama dari hasil pencarian (ubah sesuai XPATH hasil sebenarnya)
     try:
-        nama_web = driver.find_element(By.XPATH, '//div[contains(@class,"nama-pemilih")]').text
-        valid = "COCOK" if nama_input.lower() == nama_web.lower() else "TIDAK COCOK"
+        # ambil teks p yang berisi Nama Pemilih
+        nama_raw = driver.find_element(By.XPATH, '//p[span[text()="Nama Pemilih"]]').text
+        nama_web = nama_raw.replace("Nama Pemilih", "").strip()
+        
+        if nama_input.lower() == nama_web.lower():
+            valid = "COCOK"
+            print(f"✅ Ditemukan! NIK: {nik} | Nama: {nama_web}")
+            results.append((nik, nama_web, valid))
+            print("Halaman web tetap terbuka agar bisa diperiksa.")
+            break  # hentikan loop begitu cocok ditemukan
+        else:
+            valid = "TIDAK COCOK"
+            results.append((nik, nama_web, valid))
+
     except:
         nama_web = "TIDAK DITEMUKAN"
         valid = "TIDAK COCOK"
+        results.append((nik, nama_web, valid))
 
-    results.append((nik, nama_web, valid))
-
-    # Refresh halaman, atau klik tombol 'F5' jika diperlukan
+    # Refresh halaman agar siap untuk percobaan berikutnya
     driver.refresh()
 
-# Cetak/ekspor hasil validasi
-for nik, hasil_nama, status in results:
-    print(f"NIK: {nik} | Nama: {hasil_nama} | Status: {status}")
-
 driver.quit()
+
+# Opsional: print hasil semua percobaan
+for r in results:
+    print(r)
+
