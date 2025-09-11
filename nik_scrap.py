@@ -173,7 +173,7 @@ def main():
 
     # Siapkan opsi untuk Chrome
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless") # --headful 4 GUI exist
     chrome_options.add_argument("--disable-gpu") # Disarankan untuk mode headless
     chrome_options.add_argument("--window-size=1920,1080") # Atur ukuran jendela virtual
 
@@ -252,7 +252,7 @@ def main():
 
     driver.quit()
 
-    # Laporan Hasil Akhir - Hanya yang cocok
+    # Laporan Hasil Akhir
     print("\n====== TARGET DATA REVEALED ======")
     found_results = [r for r in results if r[2] == "SUITABLE"]
 
