@@ -288,7 +288,7 @@ def main():
 
     # Siapkan opsi untuk Chrome
     chrome_options = Options()
-    chrome_options.add_argument("--head") # Fixed: was "--head", should be "--headless"
+    chrome_options.add_argument("--headless") # Fixed: was "--head", should be "--headless"
     #chrome_options.add_argument("--disable-gpu") # Disarankan untuk mode headless
     #chrome_options.add_argument("--window-size=1920,1080") # Atur ukuran jendela virtual
     chrome_options.add_argument("--log-level=3") #hide log chrome
@@ -439,4 +439,5 @@ def main():
         print("No target found, this one is an asshole.")
 
 if __name__ == "__main__":
+
     main()
