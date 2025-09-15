@@ -1,3 +1,3 @@
 # jembutkadal
 
-update v.3 iki cok, ngelu sirahku. tapi wes sangar wkwk
+update v.6.0.1 iki cok, ngelu sirahku. tapi wes sangar wkwk
